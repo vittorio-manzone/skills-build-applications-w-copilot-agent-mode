@@ -16,7 +16,7 @@ When `VITE_CODESPACE_NAME` is set, the frontend calls:
 https://$VITE_CODESPACE_NAME-8000.app.github.dev
 ```
 
-When it is unset, the frontend safely falls back to:
+If it is omitted in Codespaces, the app derives the API host from the current `5173` frontend URL. Outside Codespaces, the frontend safely falls back to:
 
 ```text
 http://localhost:8000

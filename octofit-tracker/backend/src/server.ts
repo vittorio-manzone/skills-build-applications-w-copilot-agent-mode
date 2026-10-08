@@ -13,6 +13,31 @@ export const baseUrl = codespaceName
   ? `https://${codespaceName}-8000.app.github.dev`
   : 'http://localhost:8000'
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  codespaceName ? `https://${codespaceName}-5173.app.github.dev` : '',
+].filter(Boolean)
+
+app.use((request, response, next) => {
+  const origin = request.get('origin')
+
+  if (origin && allowedOrigins.includes(origin)) {
+    response.header('Access-Control-Allow-Origin', origin)
+    response.header('Vary', 'Origin')
+  }
+
+  response.header('Access-Control-Allow-Methods', 'GET,OPTIONS')
+  response.header('Access-Control-Allow-Headers', 'Content-Type')
+
+  if (request.method === 'OPTIONS') {
+    response.sendStatus(204)
+    return
+  }
+
+  next()
+})
+
 app.use(express.json())
 
 app.get('/api/health/', (_request, response) => {
@@ -22,7 +47,7 @@ app.get('/api/health/', (_request, response) => {
 app.get('/api/users/', async (_request, response, next) => {
   try {
     const users = await User.find().sort({ name: 1 })
-  response.json(users)
+    response.json(users)
   } catch (error) {
     next(error)
   }
@@ -31,7 +56,7 @@ app.get('/api/users/', async (_request, response, next) => {
 app.get('/api/teams/', async (_request, response, next) => {
   try {
     const teams = await Team.find().sort({ name: 1 })
-  response.json(teams)
+    response.json(teams)
   } catch (error) {
     next(error)
   }
@@ -40,7 +65,7 @@ app.get('/api/teams/', async (_request, response, next) => {
 app.get('/api/activities/', async (_request, response, next) => {
   try {
     const activities = await Activity.find().sort({ activityDate: -1 })
-  response.json(activities)
+    response.json(activities)
   } catch (error) {
     next(error)
   }
@@ -49,7 +74,7 @@ app.get('/api/activities/', async (_request, response, next) => {
 app.get('/api/leaderboard/', async (_request, response, next) => {
   try {
     const leaderboard = await Leaderboard.find().sort({ rank: 1 })
-  response.json(leaderboard)
+    response.json(leaderboard)
   } catch (error) {
     next(error)
   }
@@ -58,7 +83,7 @@ app.get('/api/leaderboard/', async (_request, response, next) => {
 app.get('/api/workouts/', async (_request, response, next) => {
   try {
     const workouts = await Workout.find().sort({ name: 1 })
-  response.json(workouts)
+    response.json(workouts)
   } catch (error) {
     next(error)
   }

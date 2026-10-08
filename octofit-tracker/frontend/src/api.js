@@ -1,7 +1,10 @@
 const codespaceName = import.meta.env.VITE_CODESPACE_NAME
+const codespacesHost = window.location.hostname.match(/^(.+)-5173\.app\.github\.dev$/)
 
 export const apiBaseUrl = codespaceName
   ? `https://${codespaceName}-8000.app.github.dev`
+  : codespacesHost
+    ? `https://${codespacesHost[1]}-8000.app.github.dev`
   : 'http://localhost:8000'
 
 export function normalizeApiResponse(payload) {
