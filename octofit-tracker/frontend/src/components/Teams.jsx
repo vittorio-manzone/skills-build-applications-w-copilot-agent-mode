@@ -1,4 +1,5 @@
 import ResourceTable from './ResourceTable.jsx'
+import { apiBaseUrl, normalizeApiResponse } from '../api.js'
 
 const columns = [
   { key: 'teamId', label: 'Team ID' },
@@ -9,9 +10,19 @@ const columns = [
 ]
 
 function Teams() {
+  async function loadTeams() {
+    const response = await fetch(`${apiBaseUrl}/api/teams/`)
+
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`)
+    }
+
+    return normalizeApiResponse(await response.json())
+  }
+
   return (
     <ResourceTable
-      endpoint="/api/teams/"
+      loadRecords={loadTeams}
       title="Teams"
       description="Team profiles and weekly activity targets."
       columns={columns}

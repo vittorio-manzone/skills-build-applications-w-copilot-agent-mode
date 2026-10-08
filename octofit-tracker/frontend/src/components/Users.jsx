@@ -1,4 +1,5 @@
 import ResourceTable from './ResourceTable.jsx'
+import { apiBaseUrl, normalizeApiResponse } from '../api.js'
 
 const columns = [
   { key: 'userId', label: 'User ID' },
@@ -10,9 +11,19 @@ const columns = [
 ]
 
 function Users() {
+  async function loadUsers() {
+    const response = await fetch(`${apiBaseUrl}/api/users/`)
+
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`)
+    }
+
+    return normalizeApiResponse(await response.json())
+  }
+
   return (
     <ResourceTable
-      endpoint="/api/users/"
+      loadRecords={loadUsers}
       title="Users"
       description="Athlete profiles connected to OctoFit teams."
       columns={columns}

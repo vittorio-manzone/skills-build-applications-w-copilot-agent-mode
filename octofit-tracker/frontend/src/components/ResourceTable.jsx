@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { apiBaseUrl, fetchResource } from '../api.js'
+import { apiBaseUrl } from '../api.js'
 
 function formatValue(value) {
   if (Array.isArray(value)) {
@@ -17,7 +17,7 @@ function formatValue(value) {
   return value ?? ''
 }
 
-function ResourceTable({ endpoint, title, description, columns }) {
+function ResourceTable({ loadRecords, title, description, columns }) {
   const [records, setRecords] = useState([])
   const [status, setStatus] = useState('loading')
   const [error, setError] = useState('')
@@ -25,10 +25,10 @@ function ResourceTable({ endpoint, title, description, columns }) {
   useEffect(() => {
     let ignore = false
 
-    async function loadRecords() {
+    async function loadData() {
       try {
         setStatus('loading')
-        const nextRecords = await fetchResource(endpoint)
+        const nextRecords = await loadRecords()
 
         if (!ignore) {
           setRecords(nextRecords)
@@ -42,12 +42,12 @@ function ResourceTable({ endpoint, title, description, columns }) {
       }
     }
 
-    loadRecords()
+    loadData()
 
     return () => {
       ignore = true
     }
-  }, [endpoint])
+  }, [loadRecords])
 
   return (
     <section>
