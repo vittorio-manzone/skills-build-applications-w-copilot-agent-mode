@@ -13,16 +13,20 @@ export const baseUrl = codespaceName
   ? `https://${codespaceName}-8000.app.github.dev`
   : 'http://localhost:8000'
 
-const allowedOrigins = [
-  'http://localhost:5173',
-  'http://127.0.0.1:5173',
-  codespaceName ? `https://${codespaceName}-5173.app.github.dev` : '',
-].filter(Boolean)
+function isAllowedOrigin(origin: string) {
+  if (/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin)) {
+    return true
+  }
+
+  return codespaceName
+    ? origin === `https://${codespaceName}-5173.app.github.dev`
+    : /^https:\/\/.+-\d+\.app\.github\.dev$/.test(origin)
+}
 
 app.use((request, response, next) => {
   const origin = request.get('origin')
 
-  if (origin && allowedOrigins.includes(origin)) {
+  if (origin && isAllowedOrigin(origin)) {
     response.header('Access-Control-Allow-Origin', origin)
     response.header('Vary', 'Origin')
   }
