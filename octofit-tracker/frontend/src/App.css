@@ -1,0 +1,90 @@
+.app-shell {
+  min-height: 100svh;
+  background:
+    linear-gradient(135deg, rgba(38, 70, 83, 0.08), transparent 28rem),
+    linear-gradient(315deg, rgba(42, 157, 143, 0.1), transparent 24rem),
+    #f8faf9;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem clamp(1rem, 4vw, 3rem);
+  border-bottom: 1px solid #dfe7e3;
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #1d3557;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.brand img {
+  border-radius: 0.5rem;
+}
+
+.app-main {
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 3rem;
+}
+
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.resource-card {
+  border: 1px solid #dfe7e3;
+  border-radius: 0.5rem;
+  background: #ffffff;
+  box-shadow: 0 16px 40px rgba(29, 53, 87, 0.08);
+  overflow: hidden;
+}
+
+.resource-card .table {
+  margin-bottom: 0;
+}
+
+.nav-pills .nav-link {
+  color: #1d3557;
+}
+
+.nav-pills .nav-link.active {
+  background: #2a9d8f;
+}
+
+.empty-state,
+.error-state,
+.loading-state {
+  padding: 2rem;
+  color: #495057;
+}
+
+@media (max-width: 760px) {
+  .app-header,
+  .page-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .nav {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 0.25rem;
+  }
+}
